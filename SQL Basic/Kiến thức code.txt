@@ -1,0 +1,31 @@
+Database mẫu có 3 file. create bject để thêm table mới vào database, load data để thêm dữ liệu vào table, drop all object để xóa hết table khỏi database
+
+Schema là 1 namespace để gom các table chung 1 đặc điểm nào đó để dễ quản lý, nếu ta k sử dụng schema thì sẽ lấy schema mặc định là dbo. Trong 1 database thì tên của schema là duy nhất được chỉ định với cú pháp đầy đủ là server.database.scheme.object => Nhờ v mà ta có thể phân quyền quản lý schema cho từng user khác nhau
+
+Khóa chính thường chỉ nên 1 column, k được null và là duy nhất, nếu là kiểu số nguyên thì nên thiết lập tự động tăng IDENTITY để tối ưu database
+
+Bảng A có 1 foreign key refer đến primary key của bảng B => k thể xóa bảng B được nếu muốn sẽ phải xóa bảng A trước. Tương tự k thể xóa 1 schema khi đang có bảng dùng nó
+
+MySQL, T-SQL, SQL hay cái gì đi chăng nx cũng chỉ là ngôn ngữ SQL, đôi khi cú pháp nó hơi khác nhau nhưng nhìn chung là 1
+
+subquery là câu SQL đặc biệt để kết hợp nhiều câu lệnh SELECT trong 1 lệnh SELECT. Bình thường ta dùng 1 câu lệnh SELECT chẳng hạn thì nó trả ra 1 table thì ta tiếp tục dùng nó làm table tạm để join nó tiếp với 1 table khác
+
+View trong SQL cho ta lưu trữ câu lệnh SQL để lấy ra dùng lúc nào cũng được. Nó cũng là 1 table nhưng ta chỉ có thể đọc chứ k thể update, delete, insert
+Nhờ view có thể hạn chế người dùng truy cập vào table, họ truy cập thông qua view sẽ an toàn hơn vì người dùng k thể xem lệnh là gì và k thê dổi dữ liệu. Tái sử dụng, sai view thì sửa 1 phát các câu lệnh khác sẽ xong luôn chứ kp sửa lỗi đó ở từng file
+
+T-SQL là Transact-SQL là 1 phần mở rộng của SQL và phát triển theo chuẩn ISO và ANSI. 
+
+Temporary Table là table đặc biệt lưu tạm thời trên SQL Server. Ta dùng nó để lưu 1 câu SELECT nào đó nhiều lần được. Nó có đầy đủ tính năng của table và có 2 loại: Local Temporary Table và Global Temporary Table. Local Temp Table chỉ tồn tại trong 1 phiên làm việc còn Global Temp Table có thể sử dụng trên nhiều phiên làm việc. Phiên làm việc hay session là ktg giữa khi ta kết nối vào CSDL và ngắt kết nối
+
+Stored procedure là tập hợp 1 or nhiều các câu lệnh T-SQL thành 1 nhóm và lưu trên DB Server. Khi 1 câu lệnh gọi chạy stored procedure lần đầu thì SQL Server chạy nó và lưu vào đệm gọi là plan cache, những lần tiếp theo sẽ dùng lại plan cache nên cho tốc độ tối ưu. DBA có thể tạo ra 1 nhóm các câu lệnh và gửi cho người khác và họ k cần biết nội dung bên trong là gì, chỉ cần biết truyền đầu vào là gì thì sẽ có đầu ra như nào
+
+Vc đầu tiên trước khi thực hiện được 1 query là phải chắc chắn đang thao tác vói đúng database
+
+Biến Table có chức năng gần giống như Temporary Table nhưng sẽ bị xóa khi out of scope. K thể sử dụng ALTER TABLE để đổi cấu trúc của mảng. Chỉ phù hợp với dữ liệu nhỏ vì càng lớn càng chậm. K nên sử dụng làm tham số hay output của procedure nhưng có thể return trong function, k thể tạo chỉ mục trên bảng tạm. 
+Sử dụng biến table trong procedure giúp chương trình hoạt động tốt hơn bởi SQL Server sẽ ít phải biên dịch hơn so với sử dụng bảng tạm. Biến table dùng ít tài nguyên hơn. Biến table sống trong tempdb như bảng tạm chứ kp trong bộ nhớ
+
+TRIGGER trong SQL giúp ta bắt các sự kiện mỗi khi update, insert hay delete thì ta muốn làm gì đó. VD: 1 bảng GiaoVien và ta muốn mỗi khi 1 giáo viên mới được thêm vào bảng thì làm gì đó, VD check nếu lương dưới 5tr thì bỏ qua, trên 5tr mới thêm vào bảng chẳng hạn. Hay mỗi khi có data thêm vào thì update cái gì ở 1 bảng mới nào đó.
+Trong SQL còn có 2 loại bảng ảo là INSERTED và DELETED. Mỗi khi dữ liệu được insert hay xóa thì data sẽ được lưu vào 2 bảng này. Lưu ý UPDATE thực chất là xóa và add lại nên sẽ phát ra sự kiện update nhưng cả 2 bảng đều được lưu. Cụ thể bảng inserted sẽ lưu data mới của row vừa update và deleted lưu data cũ của row vừa update. VD khi event insert xảy ra thì bảng deleted k lưu gì cả nhưng bảng inserted lưu dữ liệu row mới được inserted
+2 bảng ảo này chỉ tồn tại trong trigger
+
+INSTEAD OF trigger là 1 loại trigger đặc biệt cho phép bỏ qua câu lệnh INSERT, DELETE or UPDATE trên 1 table or view. VD khi muốn có hành động delete trên table product thì ta k xóa sản phẩm mà sẽ chạy 1 câu lệnh UPDATE status sang chế độ ẩn.

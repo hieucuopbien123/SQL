@@ -1,0 +1,80 @@
+SQLite là dùng SQL mà k có database server
+
+Thực chất SSMS chính là phần mềm phía client dành cho những người xử lý dữ liệu, còn SQL Server là phía server vì client có thể dùng SSMS để tương tác giao diện với server thực
+
+Ta chỉ cần database khi cần share 1 lượng lớn data, thay đổi thường xuyên, xử lý đồng thời, rapid queries.
+
+SQL là 1 tiêu chuẩn của ANSI/ISO, là 1 ngôn ngữ máy tính. Ngày xưa có tên SEQUEL(Structured English Query Language) nhưng sau đổi thành SQL để tránh vc tranh chấp nhãn hiệu. Nh người nói rằng SQL là Structured Query Language (Ngôn ngữ truy vấn có cấu trúc) nhưng thực tế lịch sử kp như v. Nó ban đầu chỉ được xd để quản lý và truy lục dữ liệu được lưu trữ trong Hệ thống R tại IBM.
+
+Cài SQL trên Linux vất vả vl: https://www.youtube.com/watch?v=bzOljuaYeUk
+Xong phải thao tác lệnh trên terminal thì ăn cứt. Dùng SSMS giao diện tốt hơn.
+
+Master database là primary configuration database trong SQL server. Nó chứa thông tin của mọi databases tồn tại trong server chứa physical database file và vị trí của chúng. Nó cũng chứa cả SQL Server's configuration setting và login account info.
+
+Ta tạo ra các account xong đăng nhận vào DBMS với account đó sẽ vào được các database và table mà account được được quyền
+
+ADO(ActiveX Data Objects) là các thành phần trong phần mềm giao diện cho các ứng dụng client truy cập vào data. 
+DAO(Data Access Objects) cũng là 1 lớp lo việc truy cập CSDL rồi viết các hàm thao tác với dữ liệu r chuyển cho tầng server xử lý.
+=> 2 cái này là 2 method giúp truy cập CSDL và có ưu nhược điểm riêng với cú pháp hơi khác nhau 1 chút thôi.
+
+Azure là 1 DBMS thì nó thay thế cho Microsoft SQL Management Studio, dùng cái nào cũng được.
+
+SSMS khi vào sẽ cho ta chọn server, network server là các server từ bên ngoài còn local server là các server tự detect có trong máy
+
+Khi các ứng dụng ngoài muốn connect với server và database trong server có thể dùng connection string. Connection string lại có nhiều loại khác nhau và phải tra google với các ứng dụng đôi khi rất khó tìm
+
+MySQL và SQL Server(Microsoft SQL Server) có những ưu nhược điểm riêng nhưng SQL Server hiện tại vẫn là phổ biến nhất. Phát triển bởi Microsoft lưu dữ liệu chuẩn RDBMS và cũng là 1 hệ quản trị cơ sở dữ liệu quan hệ đối tượng(ORDBMS)
+
+SQL Server bảo mật cao, cho phép phân tích dữ liệu bằng SSAS(SQL Server Analysis Services) hay tạo được báo cáo bằng SSRS(SQL Server Reporting Services) hay thực hiện quá trình ETL(Extract-Transform-Load) bằng SSIS(SQL Server Integration Services)
+
+Nó gồm 2 thành phần: Workstation - cài trên thiết bị vận hành, là các phần mềm tương tác với máy chủ server như SSMS; Server cài trên máy chủ chính tập trung là các dịch vụ như SQL Server, SQL Server Agent, SSIS, SSAS, SSRS, SQL Browser, SQL Full Text Search
+=> 1 máy có thể cài nhiều phiên bản SQL Server trên cùng 1 máy chủ để tiết kiệm chi phí và tách biệt giúp hệ thống an toàn hơn
+
+SQL Server có nhiều phiên bản ứng dụng cho 1 mục đích cụ thể để tối ưu. Đó là lý do ta thấy có nhiều phiên bản vãi nồi. VD: Enterprise, Standard, Workgroup, Web, Developer, Express(bản cơ bản dùng max 1 CPU và 1GB RAM, dung lượng bản max là 10GB), Compact, Datacenter, Business Intelligence, Enterprise Evaluation
+
+SQL Server có 2 hình thức cài là trên máy đơn or trên hệ thống Cluster. Cluster là một hệ thống server bao gồm nhiều máy chủ được kết nối với nhau theo dạng song song hay phân tán và được sử dụng như một tài nguyên thống nhất. Cài trên máy tính của ta chỉ là cài trên máy đơn mà thôi.
+Để cài phải có quyền admin và phiên bản yêu cầu phải có .net framework 4.0, Windows PowerShell 2.0, Windows installer 4.5/later
+Để thao tác với SSMS phải tạo 1 tk để đăng nhập. Chuột phải vào Security và New Login
+
+=> Mặc định dùng Window Authentication là đăng nhập vào CSDL với vai trò như root là người tạo ra mọi thứ. Còn tạo tk là từng người dùng có thể đăng nhập.
+TK sa là tk quản trị viên có tất cả giống như window authentication, ngoài ra còn có nhiều tk của system ta k cần quan tâm.
+Bên cạnh database ta tự tạo còn có các database hệ thống có sẵn nx
+
+Ta có thể tạo ra 1 tài khoản trong SQL Server: rightclick Security -> New Login -> setup mọi thứ
+Sau khi có tài khoản, ta có thể tùy chỉnh quyền hạn của tài khoản đó. Nên nhớ mỗi database đều chỉ có 1 db_owner, ta có thể add thêm user truy cập vào database của ta. Nhưng nếu ta set cho 1 tk là db_owner, thì quyền owner chuyển sang người đó và xóa quyền đó ở người khác. Khi 1 tk owned 1 schema của database thì nó sẽ k bị xóa khỏi list user kể cả khi ta đã xóa user đó trong Security chung của database trừ khi ta tắt schema cũng như đổi quyền đó sang cho người khác để user đó k còn owned schema nào nx là đc.
+Xóa tài khoản phải xóa nó trong từng database nx nhé
+
+Set up tk đăng nhập được: Security -> New Login -> Tạo account, set default database, Status set login là enabled và grant quyền access database engine -> rightclick database -> Security -> check SQL Server and Window Authentication mode -> vào database nào đó -> New User -> đặt và chọn User là tk login vừa tạo -> cấp quyền gì cho nó với database này -> đăng nhập được
+Vì cái tk phải có ít nhất 1 database nào đó truy cập được thì mới đăng nhập được.
+Để dùng sa: rightclick sa -> đổi mật khẩu tùy ý -> set up quyền -> đăng nhập được -> tài khoản sa k cần cấp quyền user cho database nào hết vì nó mặc định vào được tất cả
+Để xóa được user khỏi database, phải cấp quyền owned schema của nó cho tk khác(cho dbo) thì khi nó hết quyền owned thì mới xóa được
+=> Nch là có thể tạo tài khoản trong Security và tùy ý phân quyền hay làm gì với nó với từng database. Custom mọi thứ về tài khoản và từng database và cả việc dùng được tk sa.
+
+Muốn tạo database phải dùng tk sa or window auth chứ tk người dùng bth k làm được
+
+Tập tin dữ liệu (Data-file): gồm 1 tập tin lưu trữ dữ liệu chính (*.mdf) là main chứa các dữ liệu khởi đầu và các tập tin dữ liệu thứ cấp (*.ndf) chứa dữ liệu phát sinh hoặc không lưu hết trong tập tin lưu trữ chính.
+Tập tin nhật ký thao tác (*.ldf) là log chứa thông tin giao tác, thường dùng để khôi phục Database nếu xảy ra sự cố. 
+
+Bôi đen + F5 => chỉ exec phần code bôi đen
+
+Trong SQL, kiểu dữ liệu chỉ định type và kích thước của Column trong vùng nhớ dựa trên kiểu chuẩn do ANSI/ISO cung cấp nhưng chỉ tầm 16/143 được dùng phổ biến
+Với các kiểu dữ liệu lớn, thừa 1 byte cho 1 column có thể thất thoát bộ nhớ rất lớn
+
+Các thao tác thêm, sửa, xóa, xem, thêm khóa chính,.. đều có thể thực hiện bằng giao diện trong SSMS
+
+Unikey run administrator mới dùng được trong các ứng dụng run administrator
+
+Vc tối ưu chỉ mục sẽ giúp xác định vị trí của dữ liệu cần tìm. VD tìm 1 thứ bình thường sẽ duyệt hết vài triệu record trong bảng nhưng khi có index thì chỉ cần tìm vài trăm
+Khi tạo PRIMARY key thì cũng chính là đánh chỉ mục gọi là clustered index, các hàng k được trùng dữ liệu với nhau. Các loại chỉ mục kp PRIMARY sẽ gọi là secondary index or non-clustered indexes
+
+Có thể vẽ diagram cho relational database -> rightclick vào database diagram và tạo chọn toàn bộ table
+
+SQL Injection là code inject để truy xuất thông tin người dùng. Nó giống tấn công XSS của JS ấy. VD: người dùng nhâp vào ID của họ và thực hiện:
+SELECT UserId, Name, Password FROM Users WHERE UserId = <id người dùng nhập>; => nếu họ nhập 105 OR 1=1 thì xử lý thành:
+SELECT UserId, Name, Password FROM Users WHERE UserId = 105 or 1=1; sẽ lộ password của tất cả mn trong database. Tương tự họ dùng 105; DROP TABLE Suppliers sẽ thành: 
+SELECT * FROM Users WHERE UserId = 105; DROP TABLE Suppliers; sẽ phá hoại xóa database.
+
+Tên thì dùng clazz chứ đừng class kẻo lỗi đặt tên
+Quy ước đặt tên: Bảng thì viết hoa chữ cái đầu và k dùng số nhiều, biến dùng camel key, các query dùng viết hoa hết
+
+Dùng giao diện người ta gọi là SQL Server Management Studio còn dùng câu lệnh người ta gọi là dùng Transact-SQL
